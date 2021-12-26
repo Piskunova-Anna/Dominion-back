@@ -9,11 +9,15 @@ const userSchema = new mongoose.Schema({
     minlength: 2,
     maxlength: 30,
   },
+  surname: {
+    type: String,
+    required: false,
+    minlength: 2,
+    maxlength: 30,
+  },
   access: {
     type: Boolean,
     required: true,
-    minlength: 2,
-    maxlength: 30,
     default: false,
   },
   email: {
@@ -24,6 +28,21 @@ const userSchema = new mongoose.Schema({
       validator: (v) => validator.isEmail(v),
       message: 'Неверный формат почты',
     },
+  },
+  agency: {
+    type: String,
+    required: true,
+  },
+  admin: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
+  phone: {
+    type: String,
+    required: true,
+    minlength: 11,
+    maxlength: 19,
   },
   password: {
     type: String,

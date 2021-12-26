@@ -76,7 +76,7 @@ const deleteCard = (req, res, next) => {
     .then((card) => {
       User.findById(req.user._id)
       .then((user) => {
-        if(user.access || req.user._id === String(card.owner)) {
+        if(user.admin || req.user._id === String(card.owner)) {
           Card.findByIdAndRemove(cardId)
           .orFail(new Error('Error'))
           .then((data) => res.send(data))
@@ -123,9 +123,9 @@ const updateCard = (req, res, next) => {
   .then((card) => {
     User.findById(req.user._id)
     .then((user) => {
-      console.log(user.access)
+      console.log(user.admin)
       console.log(req.user._id)
-      if(user.access || req.user._id === String(card.owner)) {
+      if(user.admin || req.user._id === String(card.owner)) {
         Card.findByIdAndUpdate(cardId,
           {name,
           image,
