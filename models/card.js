@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+
 const cardSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -10,11 +11,7 @@ const cardSchema = new mongoose.Schema({
   image: [{
     type: String,
     required: true,
-    validate: {
-      validator(link) {
-        return validator.isURL(link);
-      },
-    },
+    
   }],
   description: {
     type: String,
@@ -33,10 +30,10 @@ const cardSchema = new mongoose.Schema({
   transaction: {
     type: String,
     required: true,
-    enum:["покупка", "продажа", "аренда"]
+    enum:["Покупка", "Продажа", "Аренда"]
   },
   floor: {
-    type: Number,
+    type: String,
     required: true,
   },
   rooms: {
@@ -48,15 +45,15 @@ const cardSchema = new mongoose.Schema({
     required: true,
   },
   balcony: {
-    type: String,
+    type: Boolean,
     required: true,
   },
   elevator: {
-    type: String,
+    type: Boolean,
     required: true,
   },
   repair: {
-    type: String,
+    type: Boolean,
     required: true,
   },
   metro: {
@@ -70,6 +67,10 @@ const cardSchema = new mongoose.Schema({
   kitchenarea: {
     type: String,
     required: true,
+  },
+  active: {
+    type: Boolean,
+    default: true,
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,

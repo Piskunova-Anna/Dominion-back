@@ -7,11 +7,11 @@ const UserError = require('../errors/UserError');
 
 const createUser = (req, res, next) => {
   const {
-    name, email,
+    name, email, surname, phone, agency
   } = req.body;
   bcrypt.hash(req.body.password, 10)
     .then((hash) => User.create({
-  name, email, password: hash,
+      name, email, surname, phone, agency, password: hash,
     }))
     .then((user) => {
   res.status(201).send({ _id: user._id, email: user.email });
@@ -33,6 +33,7 @@ const login = (req, res, next) => {
   const { email, password } = req.body;
   User.findUserByCredentials(email, password)
     .then((user) => {
+      if(user.access) {
       const token = jwt.sign(
         { _id: user._id },
         NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
@@ -44,7 +45,15 @@ const login = (req, res, next) => {
         //sameSite: 'none',
         //secure: true,
       })
-      .send({ message: 'Авторизация прошла успешно' });
+      .send({ 
+        succes: 'ok',
+        message: 'Авторизация прошла успешно' })
+    } else {
+      res.send({ 
+        succes: 'no',
+        message: 'Ваша учетная запись не подтверждена. Дождитесь подтверждения!' })
+      }
+
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -87,11 +96,11 @@ const findCurrent = (req, res, next) => {
 
 // Изменение данных пользователя
 const updateUser = (req, res, next) => {
-    const { name, email } = req.body;
+    const { name, email, surname, phone, agency } = req.body;
     const id = req.user._id;
     User.findByIdAndUpdate(
       id,
-      { name, email },
+      { name, email, surname, phone, agency },
       { new: true, runValidators: true },
     )
       .orFail(new Error('Error'))
@@ -107,6 +116,32 @@ const updateUser = (req, res, next) => {
       });
   };
 
+  // Изменение прав доступа пользователя
+const updateAccessUser = (req, res, next) => {
+  const { access } = req.body;
+  const {userId } = req.params;
+  const admin = req.user
+  console.log(admin)
+  console.log(userId)
+  User.findByIdAndUpdate(
+    userId,
+    { access },
+    { new: true, runValidators: true },
+  )
+    .orFail(new Error('Error'))
+    .then((user) => res.send(user))
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        next(new UserError(400));
+      } else if (err.name === 'Error') {
+        next(new UserError(400));
+      } else {
+        next(new UserError(500));
+      }
+    });
+};
+
+
 
   module.exports = {
     createUser,
@@ -115,4 +150,5 @@ const updateUser = (req, res, next) => {
     findUser,
     findCurrent,
     updateUser,
+    updateAccessUser
   };

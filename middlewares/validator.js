@@ -23,6 +23,9 @@ const validateSignUp = celebrate({
     name: Joi.string().min(2).max(30),
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
+    surname: Joi.string().min(2).max(30),
+    phone: Joi.string().min(11).max(19),
+    agency: Joi.string().min(2).max(30),
   }),
 });
 
@@ -37,20 +40,22 @@ const validateUpDateUser = celebrate({
 const validateCreateCard = celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
-    image: Joi.array().items(Joi.string().custom(validateURL)).required(),
+    image: Joi.array().items(Joi.string()).required(),
+    //image: Joi.string().required(),
     description: Joi.string().required().min(5).max(600),
     adress: Joi.string().required(),
     price: Joi.number().required(),
     rooms: Joi.number().required(),
     cadastre: Joi.string().required(),
     transaction: Joi.string().required(),
-    floor: Joi.number().required(),
+    floor: Joi.string().required(),
     metro: Joi.string().required(),
-    balcony: Joi.string().required(),
-    elevator: Joi.string().required(),
-    repair: Joi.string().required(),
+    balcony: Joi.boolean().required(),
+    elevator: Joi.boolean().required(),
+    repair: Joi.boolean().required(),
     totalarea: Joi.number().required(),
     kitchenarea: Joi.number().required(),
+    active: Joi.boolean(),
   }),
 });
 
