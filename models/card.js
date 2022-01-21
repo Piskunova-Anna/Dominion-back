@@ -68,6 +68,14 @@ const cardSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  district: {
+    type: String,
+    required: true,
+  },
+  commission: {
+    type: String,
+    required: true,
+  },
   active: {
     type: Boolean,
     default: true,

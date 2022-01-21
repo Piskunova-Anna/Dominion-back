@@ -121,8 +121,6 @@ const updateAccessUser = (req, res, next) => {
   const { access } = req.body;
   const {userId } = req.params;
   const admin = req.user
-  console.log(admin)
-  console.log(userId)
   User.findByIdAndUpdate(
     userId,
     { access },

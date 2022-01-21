@@ -20,8 +20,11 @@ const createCard = (req, res, next) => {
     metro,
     totalarea,
     kitchenarea,
+    district,
+    commission,
   } = req.body;
 
+  
 const owner = req.user._id;
 
 Card.create({
@@ -40,7 +43,10 @@ Card.create({
     metro,
     totalarea,
     kitchenarea,
-    owner
+    district,
+    commission,
+    owner,
+    
   })
     .then((card) => res.send(card))
     .catch((err) => {
@@ -116,6 +122,8 @@ const updateCard = (req, res, next) => {
     repair,
     metro,
     totalarea,
+    district,
+    commission,
     kitchenarea, } = req.body;
   const { cardId } = req.params;
  
@@ -123,8 +131,6 @@ const updateCard = (req, res, next) => {
   .then((card) => {
     User.findById(req.user._id)
     .then((user) => {
-      console.log(user.admin)
-      console.log(req.user._id)
       if(user.admin || req.user._id === String(card.owner)) {
         Card.findByIdAndUpdate(cardId,
           {name,
@@ -141,6 +147,8 @@ const updateCard = (req, res, next) => {
           repair,
           metro,
           totalarea,
+          commission,
+          district,
           kitchenarea },
           { new: true, runValidators: true },
         )
