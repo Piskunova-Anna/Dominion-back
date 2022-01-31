@@ -37,7 +37,7 @@ const cardSchema = new mongoose.Schema({
     required: true,
   },
   rooms: {
-    type: Number,
+    type: String,
     required: true,
   },
   cadastre: {
@@ -74,7 +74,6 @@ const cardSchema = new mongoose.Schema({
   },
   commission: {
     type: String,
-    required: true,
   },
   active: {
     type: Boolean,

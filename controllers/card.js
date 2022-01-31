@@ -109,6 +109,7 @@ const deleteCard = (req, res, next) => {
 const updateCard = (req, res, next) => {
   const { 
     name,
+    active,
     image,
     description,
     price,
@@ -131,9 +132,12 @@ const updateCard = (req, res, next) => {
   .then((card) => {
     User.findById(req.user._id)
     .then((user) => {
+      console.log(req.body)
+      console.log(cardId)
       if(user.admin || req.user._id === String(card.owner)) {
         Card.findByIdAndUpdate(cardId,
           {name,
+          active,
           image,
           description,
           price,
