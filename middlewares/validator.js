@@ -61,6 +61,8 @@ const validateCreateCard = celebrate({
   }),
 });
 
+
+
 const validateDeleteCard = celebrate({
   params: Joi.object().keys({
     cardId: validateId,

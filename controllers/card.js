@@ -77,7 +77,6 @@ const findAllCard = (req, res, next) => {
   // удаление карточек
 const deleteCard = (req, res, next) => {
     const { cardId } = req.params;
-     
     Card.findById(cardId)
     .then((card) => {
       User.findById(req.user._id)
@@ -107,9 +106,8 @@ const deleteCard = (req, res, next) => {
 
 // Редактирование карточек
 const updateCard = (req, res, next) => {
-  const { 
+  const {
     name,
-    active,
     image,
     description,
     price,
@@ -123,21 +121,21 @@ const updateCard = (req, res, next) => {
     repair,
     metro,
     totalarea,
+    kitchenarea,
     district,
+    active,
     commission,
-    kitchenarea, } = req.body;
+  } = req.body;
+
   const { cardId } = req.params;
- 
+
   Card.findById(cardId)
   .then((card) => {
     User.findById(req.user._id)
     .then((user) => {
-      console.log(req.body)
-      console.log(cardId)
       if(user.admin || req.user._id === String(card.owner)) {
-        Card.findByIdAndUpdate(cardId,
-          {name,
-          active,
+        Card.findByIdAndUpdate(cardId, {
+          name,
           image,
           description,
           price,
@@ -151,13 +149,15 @@ const updateCard = (req, res, next) => {
           repair,
           metro,
           totalarea,
-          commission,
+          kitchenarea,
           district,
-          kitchenarea },
+          active,
+          commission,
+        },
           { new: true, runValidators: true },
         )
         .orFail(new Error('Error'))
-        .then((card) => res.send(card))
+        .then((card) =>res.send(card))
         .catch((err) => {
           if (err.name === 'ValidationError') {
             next(new CardError(400));
@@ -171,10 +171,10 @@ const updateCard = (req, res, next) => {
         next(new CardError(403));
       }
     })
-    .catch(() => next(new CardError(500)))
-})
-.catch(() => next(new CardError(500)))
-}
+    .catch((err) => new CardError(500));
+  })
+};
+
 
   module.exports = {
     createCard,
