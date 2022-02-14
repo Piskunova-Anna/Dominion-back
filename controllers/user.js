@@ -53,7 +53,6 @@ const login = (req, res, next) => {
         succes: 'no',
         message: 'Ваша учетная запись не подтверждена. Дождитесь подтверждения!' })
       }
-
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -76,6 +75,7 @@ const logout = (req, res) => {
       { message: 'Вы вышли из системы' },
     );
   };
+
 
   // Поиск пользователей
 const findUser = (req, res, next) => {
