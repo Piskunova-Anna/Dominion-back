@@ -17,7 +17,7 @@ const cardSchema = new mongoose.Schema({
     type: String,
     required: true,
     minlength: 5,
-    maxlength: 600,
+    maxlength: 10000,
   },
   price: {
     type: String,

@@ -48,7 +48,7 @@ const validateCreateCard = celebrate({
     rooms: Joi.string().required(),
     cadastre: Joi.string().required(),
     district: Joi.string().required(),
-    commission: Joi.string(),
+    commission:Joi.string().required(),
     transaction: Joi.string().required(),
     floor: Joi.string().required(),
     metro: Joi.string().required(),
