@@ -33,7 +33,7 @@ const login = (req, res, next) => {
   const { email, password } = req.body;
   User.findUserByCredentials(email, password)
     .then((user) => {
-      if(!user.access) {
+      if(user.access) {
       const token = jwt.sign(
         { _id: user._id },
         NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
@@ -96,11 +96,11 @@ const findCurrent = (req, res, next) => {
 
 // Изменение данных пользователя
 const updateUser = (req, res, next) => {
-    const { name, email, surname, phone, agency, admin } = req.body;
+    const { name, email, surname, phone, agency } = req.body;
     const id = req.user._id;
     User.findByIdAndUpdate(
       id,
-      { name, email, surname, phone, agency, admin },
+      { name, email, surname, phone, agency },
       { new: true, runValidators: true },
     )
       .orFail(new Error('Error'))
@@ -120,7 +120,6 @@ const updateUser = (req, res, next) => {
 const updateAccessUser = (req, res, next) => {
   const { access } = req.body;
   const {userId } = req.params;
-  const admin = req.user
   User.findByIdAndUpdate(
     userId,
     { access },
@@ -139,7 +138,7 @@ const updateAccessUser = (req, res, next) => {
     });
 };
 
-  // Изменение прав доступа пользователя
+  // Изменение прав Админа пользователя
   const addAdminUser = (req, res, next) => {
     const { admin } = req.body;
     const {userId } = req.params;
