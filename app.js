@@ -18,7 +18,21 @@ const CORS_HEADERS = ['Authorization', 'Content-Type', 'Accept'];
 const ALLOWED_CORS = [
   'http://localhost:3000',
   'https://localhost:3000',
-];*/
+];
+
+app.use(cors({
+  origin(origin, callback) {
+    if (ALLOWED_CORS.includes(origin) || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error(messages.corsErr));
+    }
+  },
+  methods: CORS_METHODS,
+  allowedHeaders: CORS_HEADERS,
+  credentials: true,
+}));
+app.options('*', cors());*/
 
 // подключаемся к серверу mongo
 mongoose.connect('mongodb://localhost:27017/domdb', {
@@ -33,21 +47,6 @@ app.use(helmet());
 app.use(limiter);
 // подключаем логгер запросов
 app.use(requestLogger);
-
-/*app.use(cors({
-  origin(origin, callback) {
-    if (ALLOWED_CORS.includes(origin) || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error(messages.corsErr));
-    }
-  },
-  methods: CORS_METHODS,
-  allowedHeaders: CORS_HEADERS,
-  credentials: true,
-}));
-app.options('*', cors());*/
-
 
 
 // подключаемя куки

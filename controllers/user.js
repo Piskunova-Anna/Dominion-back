@@ -138,6 +138,24 @@ const updateAccessUser = (req, res, next) => {
     });
 };
 
+//Удаление пользователя
+const deleteUser = (req, res, next) => {
+  const { userId } = req.params;
+  User.findByIdAndRemove(userId)
+  .orFail(new Error('Error'))
+  .then((data) => res.send(data))
+  .catch((err) => {
+    if (err.name === 'CastError') {
+      next(new UserError(400));
+    } else if (err.name === 'Error') {
+      next(new UserError(404));
+    } else {
+      next(new UserError(500));
+    }
+  });
+  
+};
+
   // Изменение прав Админа пользователя
   const addAdminUser = (req, res, next) => {
     const { admin } = req.body;
@@ -168,5 +186,6 @@ const updateAccessUser = (req, res, next) => {
     findCurrent,
     updateUser,
     updateAccessUser,
-    addAdminUser
+    addAdminUser,
+    deleteUser,
   };
