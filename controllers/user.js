@@ -33,7 +33,7 @@ const login = (req, res, next) => {
   const { email, password } = req.body;
   User.findUserByCredentials(email, password)
     .then((user) => {
-      if(user.access) {
+      if(!user.access) {
       const token = jwt.sign(
         { _id: user._id },
         NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
@@ -42,8 +42,8 @@ const login = (req, res, next) => {
       res.cookie('jwt', token, {
         maxAge: 3600000 * 24 * 7,
         httpOnly: true,
-        //sameSite: 'none',
-        //secure: true,
+        sameSite: 'none',
+        secure: true,
       })
       .send({ 
         succes: 'ok',
