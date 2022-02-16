@@ -12,13 +12,14 @@ const errorsHandler = require('./errors/errorsHandler');
 const { requestLogger, errorLogger } = require('./errors/logger');
 const router = require('./routes/index');
 const { limiter } = require('./middlewares/limiter');
-const cors = require('cors');
-const CORS_METHODS = ['GET', 'PUT', 'POST', 'DELETE', 'PATCH', 'HEAD'];
-const CORS_HEADERS = ['Authorization', 'Content-Type', 'Accept'];
-const ALLOWED_CORS = [
+//const cors = require('cors');
+//const CORS_METHODS = ['GET', 'PUT', 'POST', 'DELETE', 'PATCH', 'HEAD'];
+//const CORS_HEADERS = ['Authorization', 'Content-Type', 'Accept'];
+/*const ALLOWED_CORS = [
   'http://localhost:3000',
   'https://localhost:3000',
-];
+];*/
+
 // подключаемся к серверу mongo
 mongoose.connect('mongodb://localhost:27017/domdb', {
  
@@ -33,7 +34,7 @@ app.use(limiter);
 // подключаем логгер запросов
 app.use(requestLogger);
 
-app.use(cors({
+/*app.use(cors({
   origin(origin, callback) {
     if (ALLOWED_CORS.includes(origin) || !origin) {
       callback(null, true);
@@ -45,7 +46,7 @@ app.use(cors({
   allowedHeaders: CORS_HEADERS,
   credentials: true,
 }));
-app.options('*', cors());
+app.options('*', cors());*/
 
 
 
