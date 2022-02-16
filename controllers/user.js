@@ -96,11 +96,11 @@ const findCurrent = (req, res, next) => {
 
 // Изменение данных пользователя
 const updateUser = (req, res, next) => {
-    const { name, email, surname, phone, agency } = req.body;
+    const { name, email, surname, phone, agency, admin } = req.body;
     const id = req.user._id;
     User.findByIdAndUpdate(
       id,
-      { name, email, surname, phone, agency },
+      { name, email, surname, phone, agency, admin },
       { new: true, runValidators: true },
     )
       .orFail(new Error('Error'))
@@ -139,7 +139,27 @@ const updateAccessUser = (req, res, next) => {
     });
 };
 
-
+  // Изменение прав доступа пользователя
+  const addAdminUser = (req, res, next) => {
+    const { admin } = req.body;
+    const {userId } = req.params;
+    User.findByIdAndUpdate(
+      userId,
+      { admin },
+      { new: true, runValidators: true },
+    )
+      .orFail(new Error('Error'))
+      .then((user) => res.send(user))
+      .catch((err) => {
+        if (err.name === 'ValidationError') {
+          next(new UserError(400));
+        } else if (err.name === 'Error') {
+          next(new UserError(400));
+        } else {
+          next(new UserError(500));
+        }
+      });
+  };
 
   module.exports = {
     createUser,
@@ -148,5 +168,6 @@ const updateAccessUser = (req, res, next) => {
     findUser,
     findCurrent,
     updateUser,
-    updateAccessUser
+    updateAccessUser,
+    addAdminUser
   };
