@@ -5,14 +5,14 @@ const {
   deleteCard,
   findIdCard,
   updateCard
-} = require('../controllers/card');
+} = require('../controllers/newflat');
 const {
-  validateCreateCard,
-  validateDeleteCard,
+    validateCreateNewFlat,
+    validateDeleteNewFlat,
 } = require('../middlewares/validator');
 
-router.post('/', validateCreateCard, createCard);
+router.post('/', validateCreateNewFlat, createCard);
 router.get('/', findCard);
-router.delete('/:cardId', validateDeleteCard, deleteCard);
+router.delete('/:cardId', validateDeleteNewFlat, deleteCard);
 router.patch('/:cardId', updateCard);
 module.exports = router;

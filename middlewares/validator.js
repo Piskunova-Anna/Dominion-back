@@ -45,13 +45,18 @@ const validateCreateCard = celebrate({
     description: Joi.string().required().min(5).max(100000),
     adress: Joi.string().required(),
     price: Joi.number().required(),
+    plotarea: Joi.string().required(),
+    jurstatus: Joi.string().required(),
+    material: Joi.string().required(),
     rooms: Joi.string().required(),
-    cadastre: Joi.string().required(),
+    cadastre: Joi.string(),
     district: Joi.string().required(),
-    commission: Joi.string(),
+    commission:Joi.string().required(),
     transaction: Joi.string().required(),
-    floor: Joi.string().required(),
-    metro: Joi.string().required(),
+    floor: Joi.string(),
+    metro: Joi.string(),
+    roomarea: Joi.string(),
+    deadline: Joi.string(),
     balcony: Joi.boolean().required(),
     elevator: Joi.boolean().required(),
     repair: Joi.boolean().required(),
@@ -61,9 +66,34 @@ const validateCreateCard = celebrate({
   }),
 });
 
-
+const validateCreateCommercialCard = celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().required().min(2).max(30),
+    image: Joi.array().items(Joi.string()).required(),
+    //image: Joi.string().required(),
+    description: Joi.string().required().min(5).max(100000),
+    adress: Joi.string().required(),
+    price: Joi.number().required(),
+    access: Joi.string().required(),
+    infrastructure: Joi.string().required(),
+    entrance: Joi.string().required(),
+    commission:Joi.string().required(),
+    transaction: Joi.string().required(),
+    floor: Joi.string().required(),
+    metro: Joi.string().required(),
+    parking: Joi.boolean().required(),
+    totalarea: Joi.number().required(),
+    active: Joi.boolean(),
+  }),
+});
 
 const validateDeleteCard = celebrate({
+  params: Joi.object().keys({
+    cardId: validateId,
+  }),
+});
+
+const validateDeleteCommercialCard = celebrate({
   params: Joi.object().keys({
     cardId: validateId,
   }),
@@ -75,4 +105,6 @@ module.exports = {
   validateSignIn,
   validateCreateCard,
   validateDeleteCard,
+  validateCreateCommercialCard,
+  validateDeleteCommercialCard,
 };

@@ -1,16 +1,12 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 
-const cardSchema = new mongoose.Schema({
+const commercialSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
     minlength: 2,
     maxlength: 30,
-  },
-  deadline : {
-    type: String,
-    required: false,
   },
   image: [{
     type: String,
@@ -40,59 +36,31 @@ const cardSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  rooms: {
-    type: String,
-    required: true,
-  },
-  cadastre: {
+  access : {
     type: String,
     required: false,
   },
-  balcony: {
+  infrastructure: {
+    type: String,
+    required: false,
+  },
+  parking : {
     type: Boolean,
     required: false,
   },
-  elevator: {
-    type: Boolean,
+  entrance: {
+    type: String,
     required: false,
-  },
-  repair: {
-    type: Boolean,
-    required: true,
   },
   metro: {
     type: String,
-    required: false,
+    required: true,
   },
   totalarea: {
     type: String,
     required: true,
   },
-  roomarea: {
-    type: String,
-    required: false,
-  },
-  kitchenarea: {
-    type: String,
-    required: true,
-  },
-  district: {
-    type: String,
-    required: true,
-  },
   commission: {
-    type: String,
-    required: false,
-  },
-  material: {
-    type: String,
-    required: false,
-  },
-  jurstatus: {
-    type: String,
-    required: false,
-  },
-  plotarea: {
     type: String,
     required: false,
   },
@@ -112,10 +80,6 @@ const cardSchema = new mongoose.Schema({
     default: [],
   }],
 
-  id: {
-    type: mongoose.Schema.Types.ObjectId,
-  },
-
   createdAt: {
     type: Date,
     default: Date.now,
@@ -123,4 +87,4 @@ const cardSchema = new mongoose.Schema({
   
 });
 
-module.exports = mongoose.model('card', cardSchema);
+module.exports = mongoose.model('commercial', commercialSchema);

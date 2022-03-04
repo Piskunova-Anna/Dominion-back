@@ -42,8 +42,8 @@ const login = (req, res, next) => {
       res.cookie('jwt', token, {
         maxAge: 3600000 * 24 * 7,
         httpOnly: true,
-        //sameSite: 'none',
-        //secure: true,
+        sameSite: 'none',
+        secure: true,
       })
       .send({ 
         succes: 'ok',
@@ -120,7 +120,6 @@ const updateUser = (req, res, next) => {
 const updateAccessUser = (req, res, next) => {
   const { access } = req.body;
   const {userId } = req.params;
-  const admin = req.user
   User.findByIdAndUpdate(
     userId,
     { access },
@@ -139,7 +138,45 @@ const updateAccessUser = (req, res, next) => {
     });
 };
 
+//Удаление пользователя
+const deleteUser = (req, res, next) => {
+  const { userId } = req.params;
+  User.findByIdAndRemove(userId)
+  .orFail(new Error('Error'))
+  .then((data) => res.send(data))
+  .catch((err) => {
+    if (err.name === 'CastError') {
+      next(new UserError(400));
+    } else if (err.name === 'Error') {
+      next(new UserError(404));
+    } else {
+      next(new UserError(500));
+    }
+  });
+  
+};
 
+  // Изменение прав Админа пользователя
+  const addAdminUser = (req, res, next) => {
+    const { admin } = req.body;
+    const {userId } = req.params;
+    User.findByIdAndUpdate(
+      userId,
+      { admin },
+      { new: true, runValidators: true },
+    )
+      .orFail(new Error('Error'))
+      .then((user) => res.send(user))
+      .catch((err) => {
+        if (err.name === 'ValidationError') {
+          next(new UserError(400));
+        } else if (err.name === 'Error') {
+          next(new UserError(400));
+        } else {
+          next(new UserError(500));
+        }
+      });
+  };
 
   module.exports = {
     createUser,
@@ -148,5 +185,7 @@ const updateAccessUser = (req, res, next) => {
     findUser,
     findCurrent,
     updateUser,
-    updateAccessUser
+    updateAccessUser,
+    addAdminUser,
+    deleteUser,
   };
